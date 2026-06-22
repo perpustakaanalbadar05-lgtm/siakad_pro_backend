@@ -13,7 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->statefulApi();
+        // $middleware->statefulApi();
 
         // Allow CORS for frontend
         $middleware->trustHosts(at: ['localhost', '127.0.0.1']);
