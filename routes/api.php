@@ -11,6 +11,14 @@ use App\Http\Controllers\Api\V1\LecturerController;
 use App\Http\Controllers\Api\V1\RoomController;
 use App\Http\Controllers\Api\V1\StudentController;
 use App\Http\Controllers\Api\V1\StudyProgramController;
+use App\Http\Controllers\Api\V1\AcademicCalendarController;
+use App\Http\Controllers\Api\V1\ClassScheduleController;
+use App\Http\Controllers\Api\V1\StudyPlanController;
+use App\Http\Controllers\Api\V1\GradeController;
+use App\Http\Controllers\Api\V1\PresenceController;
+use App\Http\Controllers\Api\V1\BillingTypeController;
+use App\Http\Controllers\Api\V1\StudentBillingController;
+use App\Http\Controllers\Api\V1\PaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -80,6 +88,33 @@ Route::prefix('v1')->group(function () {
 
         Route::apiResource('students', StudentController::class);
         Route::apiResource('lecturers', LecturerController::class);
+
+        // =====================================================================
+        // MANAJEMEN AKADEMIK (Phase 2)
+        // =====================================================================
+
+        Route::apiResource('academic-calendars', AcademicCalendarController::class);
+        Route::apiResource('class-schedules', ClassScheduleController::class);
+        
+        // KRS
+        Route::apiResource('study-plans', StudyPlanController::class);
+        Route::post('study-plans/{studyPlan}/approve', [StudyPlanController::class, 'approve']);
+        
+        // KHS & Penilaian
+        Route::get('grades', [GradeController::class, 'getByStudent']);
+        Route::post('grades/update', [GradeController::class, 'updateGrades']);
+        
+        // Presensi
+        Route::post('presences', [PresenceController::class, 'store']);
+
+        // =====================================================================
+        // MANAJEMEN KEUANGAN (Phase 3)
+        // =====================================================================
+        
+        Route::apiResource('billing-types', BillingTypeController::class);
+        Route::apiResource('student-billings', StudentBillingController::class);
+        Route::apiResource('payments', PaymentController::class)->except(['update']);
+        Route::post('payments/{payment}/verify', [PaymentController::class, 'verify']);
     });
 });
 
